@@ -22,7 +22,7 @@ export function StatsCard({
 }: StatsCardProps) {
   return (
     <Card className={cn("shadow-sm", className)}>
-      <CardContent className="p-4">
+      <CardContent>
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-medium text-muted-foreground">{title}</h3>
           <div className="text-primary">{icon}</div>

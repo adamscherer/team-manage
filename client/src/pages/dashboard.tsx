@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { Link } from "wouter";
+import { Link } from "react-router-dom";
 
-import { apiRequest } from "@/lib/queryClient";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ProjectProgress } from "@/components/ui/project-progress";
 import {
   Select,
   SelectContent,
@@ -14,9 +12,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { StatsCard } from "@/components/ui/stats-card";
-import { TimeEntryModal } from "@/components/ui/time-entry-modal";
-import { WeeklyChart } from "@/components/ui/weekly-chart";
+import { ProjectProgress } from "@/components/app/project-progress";
+import { StatsCard } from "@/components/app/stats-card";
+import { TimeEntryModal } from "@/components/app/time-entry-modal";
+import { WeeklyChart } from "@/components/app/weekly-chart";
 
 export default function Dashboard() {
   const [isTimeEntryModalOpen, setIsTimeEntryModalOpen] = useState(false);
@@ -223,7 +222,7 @@ export default function Dashboard() {
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold">Recent Time Entries</h2>
           <Link
-            href="/time-entries"
+            to="/time-entries"
             className="text-sm text-primary hover:text-primary/80 flex items-center"
           >
             View all

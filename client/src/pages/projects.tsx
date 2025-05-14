@@ -17,7 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { ProjectForm } from "@/components/ui/project-form";
+import { ProjectForm } from "@/components/app/project-form";
 
 export default function Projects() {
   const { toast } = useToast();

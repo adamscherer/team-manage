@@ -12,7 +12,6 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  Legend,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -27,7 +26,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ProjectProgress } from "@/components/ui/project-progress";
 import {
   Select,
   SelectContent,
@@ -35,8 +33,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { StatsCard } from "@/components/ui/stats-card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ProjectProgress } from "@/components/app/project-progress";
+import { StatsCard } from "@/components/app/stats-card";
 
 // Date range presets
 const dateRanges = [

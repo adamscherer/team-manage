@@ -30,7 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { TimeEntryModal } from "@/components/ui/time-entry-modal";
+import { TimeEntryModal } from "@/components/app/time-entry-modal";
 
 export default function TimeEntries() {
   const { toast } = useToast();

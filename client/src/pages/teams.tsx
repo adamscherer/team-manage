@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "wouter";
+import { Link } from "react-router-dom";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -313,7 +313,7 @@ export default function Teams() {
                               </p>
                             </div>
                           </div>
-                          <Link href={`/projects/${project.id}`}>
+                          <Link to={`/projects/${project.id}`}>
                             <a className="text-primary text-sm hover:underline">
                               View
                             </a>
