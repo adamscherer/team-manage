@@ -8,6 +8,7 @@ import Dashboard from "@/pages/dashboard";
 import TimeEntries from "@/pages/time-entries";
 import Projects from "@/pages/projects";
 import Reports from "@/pages/reports";
+import Teams from "@/pages/teams";
 import MainLayout from "@/layouts/main-layout";
 import { ThemeProvider } from "next-themes";
 
@@ -19,6 +20,7 @@ function Router() {
         <Route path="/time-entries" component={TimeEntries} />
         <Route path="/projects" component={Projects} />
         <Route path="/reports" component={Reports} />
+        <Route path="/teams" component={Teams} />
         <Route component={NotFound} />
       </Switch>
     </MainLayout>

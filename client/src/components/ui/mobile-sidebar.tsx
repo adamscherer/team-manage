@@ -12,18 +12,18 @@ export function MobileSidebar({ recentProjects = [] }: MobileSidebarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [location] = useLocation();
   
-  const { data: userData } = useQuery({
+  const { data: userData = {} } = useQuery<any>({
     queryKey: ["/api/users/current"],
     refetchOnWindowFocus: false,
   });
 
-  const { data: projects } = useQuery({
+  const { data: projects = [] } = useQuery<any[]>({
     queryKey: ["/api/projects"],
     refetchOnWindowFocus: false,
   });
 
   // Use retrieved projects or fallback to passed props
-  const displayProjects = projects && projects.length > 0 
+  const displayProjects = projects.length > 0 
     ? projects.slice(0, 4) 
     : recentProjects;
 
@@ -141,6 +141,24 @@ export function MobileSidebar({ recentProjects = [] }: MobileSidebarProps) {
                 <path d="M8 17v-3" />
               </svg>
               Reports
+            </a>
+          </Link>
+          
+          <Link href="/teams">
+            <a 
+              onClick={handleNavigation}
+              className={cn(
+                "flex items-center gap-3 px-3 py-4 text-base font-medium rounded-md",
+                location === "/teams" ? "bg-sidebar-accent" : "hover:bg-sidebar-accent/50"
+              )}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-users">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              Teams
             </a>
           </Link>
         </nav>
