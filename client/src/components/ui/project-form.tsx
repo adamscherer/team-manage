@@ -1,23 +1,30 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { insertProjectSchema, type InsertProject } from "@shared/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
 
 interface ProjectFormProps {
   isOpen: boolean;
@@ -62,7 +69,7 @@ export function ProjectForm({
   const projectMutation = useMutation({
     mutationFn: async (data: InsertProject & { id?: number }) => {
       const { id, ...projectData } = data;
-      
+
       const response = await apiRequest(
         isEdit ? "PUT" : "POST",
         isEdit ? `/api/projects/${id}` : "/api/projects",
@@ -73,14 +80,14 @@ export function ProjectForm({
     onSuccess: () => {
       // Invalidate queries to refetch data
       queryClient.invalidateQueries({ queryKey: ["/api/projects"] });
-      
+
       toast({
         title: isEdit ? "Project updated" : "Project created",
-        description: isEdit 
-          ? "Project has been updated successfully." 
+        description: isEdit
+          ? "Project has been updated successfully."
           : "New project has been created successfully.",
       });
-      
+
       onClose();
       form.reset();
     },
@@ -93,7 +100,7 @@ export function ProjectForm({
     },
     onSettled: () => {
       setIsSubmitting(false);
-    }
+    },
   });
 
   const onSubmit = (data: InsertProject & { id?: number }) => {
@@ -166,14 +173,25 @@ export function ProjectForm({
                   <FormLabel>Project Color</FormLabel>
                   <div className="flex flex-wrap gap-2 mt-1">
                     {projectColors.map((color) => (
-                      <div 
+                      <div
                         key={color}
                         onClick={() => form.setValue("color", color)}
-                        className={`w-8 h-8 rounded-full cursor-pointer flex items-center justify-center ${field.value === color ? 'ring-2 ring-primary ring-offset-2' : ''}`}
+                        className={`w-8 h-8 rounded-full cursor-pointer flex items-center justify-center ${field.value === color ? "ring-2 ring-primary ring-offset-2" : ""}`}
                         style={{ backgroundColor: color }}
                       >
                         {field.value === color && (
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-check">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="white"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="lucide lucide-check"
+                          >
                             <path d="M20 6 9 17l-5-5" />
                           </svg>
                         )}
@@ -219,7 +237,11 @@ export function ProjectForm({
                 Cancel
               </Button>
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Saving..." : (isEdit ? "Update Project" : "Create Project")}
+                {isSubmitting
+                  ? "Saving..."
+                  : isEdit
+                    ? "Update Project"
+                    : "Create Project"}
               </Button>
             </DialogFooter>
           </form>

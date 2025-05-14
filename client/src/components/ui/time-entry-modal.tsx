@@ -1,25 +1,37 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { timeEntryFormSchema, type TimeEntryFormData } from "@shared/schema";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface TimeEntryModalProps {
   isOpen: boolean;
@@ -65,8 +77,8 @@ export function TimeEntryModal({
   const createTimeMutation = useMutation({
     mutationFn: async (data: TimeEntryFormData) => {
       // Convert hours and minutes to duration in minutes
-      const totalMinutes = (data.hours * 60) + data.minutes;
-      
+      const totalMinutes = data.hours * 60 + data.minutes;
+
       // Prepare the data for API submission
       const submissionData = {
         projectId: data.projectId,
@@ -89,14 +101,14 @@ export function TimeEntryModal({
       // Invalidate queries to refetch data
       queryClient.invalidateQueries({ queryKey: ["/api/time-entries"] });
       queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
-      
+
       toast({
         title: isEdit ? "Time entry updated" : "Time entry created",
-        description: isEdit 
-          ? "Your time entry has been updated successfully." 
+        description: isEdit
+          ? "Your time entry has been updated successfully."
           : "Your time has been logged successfully.",
       });
-      
+
       onClose();
       form.reset();
     },
@@ -109,7 +121,7 @@ export function TimeEntryModal({
     },
     onSettled: () => {
       setIsSubmitting(false);
-    }
+    },
   });
 
   const onSubmit = (data: TimeEntryFormData) => {
@@ -126,9 +138,7 @@ export function TimeEntryModal({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>
-            {isEdit ? "Edit Time Entry" : "Track Time"}
-          </DialogTitle>
+          <DialogTitle>{isEdit ? "Edit Time Entry" : "Track Time"}</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -183,7 +193,11 @@ export function TimeEntryModal({
                     <FormControl>
                       <Input
                         type="date"
-                        value={field.value ? format(new Date(field.value), "yyyy-MM-dd") : ""}
+                        value={
+                          field.value
+                            ? format(new Date(field.value), "yyyy-MM-dd")
+                            : ""
+                        }
                         onChange={(e) => {
                           const value = e.target.value;
                           field.onChange(value ? new Date(value) : undefined);
@@ -211,7 +225,9 @@ export function TimeEntryModal({
                               max={24}
                               className="rounded-r-none"
                               {...field}
-                              onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                              onChange={(e) =>
+                                field.onChange(parseInt(e.target.value) || 0)
+                              }
                             />
                             <div className="inline-flex items-center px-3 rounded-none border border-l-0 border-input bg-muted text-muted-foreground">
                               h
@@ -236,7 +252,9 @@ export function TimeEntryModal({
                               max={59}
                               className="rounded-none"
                               {...field}
-                              onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                              onChange={(e) =>
+                                field.onChange(parseInt(e.target.value) || 0)
+                              }
                             />
                             <div className="inline-flex items-center px-3 rounded-r-md border border-l-0 border-input bg-muted text-muted-foreground">
                               m
@@ -288,7 +306,11 @@ export function TimeEntryModal({
                 Cancel
               </Button>
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Saving..." : (isEdit ? "Update Entry" : "Save Entry")}
+                {isSubmitting
+                  ? "Saving..."
+                  : isEdit
+                    ? "Update Entry"
+                    : "Save Entry"}
               </Button>
             </DialogFooter>
           </form>

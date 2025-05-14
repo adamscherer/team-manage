@@ -1,12 +1,8 @@
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { ProjectForm } from "@/components/ui/project-form";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,6 +13,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { ProjectForm } from "@/components/ui/project-form";
 
 export default function Projects() {
   const { toast } = useToast();
@@ -42,7 +43,7 @@ export default function Projects() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/projects"] });
-      
+
       toast({
         title: "Project deleted",
         description: "The project has been deleted successfully.",
@@ -79,17 +80,20 @@ export default function Projects() {
   };
 
   // Filter projects
-  const filteredProjects = projects ? projects.filter((project: any) => {
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      return (
-        project.name.toLowerCase().includes(query) ||
-        (project.client && project.client.toLowerCase().includes(query)) ||
-        (project.description && project.description.toLowerCase().includes(query))
-      );
-    }
-    return true;
-  }) : [];
+  const filteredProjects = projects
+    ? projects.filter((project: any) => {
+        if (searchQuery) {
+          const query = searchQuery.toLowerCase();
+          return (
+            project.name.toLowerCase().includes(query) ||
+            (project.client && project.client.toLowerCase().includes(query)) ||
+            (project.description &&
+              project.description.toLowerCase().includes(query))
+          );
+        }
+        return true;
+      })
+    : [];
 
   return (
     <div className="p-6">
@@ -97,7 +101,7 @@ export default function Projects() {
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">Projects</h1>
           <div>
-            <Button 
+            <Button
               onClick={() => {
                 setSelectedProject(null);
                 setIsEditMode(false);
@@ -105,7 +109,18 @@ export default function Projects() {
               }}
               className="flex items-center gap-2"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-plus">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-plus"
+              >
                 <path d="M12 5v14" />
                 <path d="M5 12h14" />
               </svg>
@@ -113,7 +128,9 @@ export default function Projects() {
             </Button>
           </div>
         </div>
-        <p className="text-muted-foreground">Manage your client projects and settings.</p>
+        <p className="text-muted-foreground">
+          Manage your client projects and settings.
+        </p>
       </header>
 
       {/* Search */}
@@ -129,28 +146,43 @@ export default function Projects() {
       {/* Projects grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {isLoading ? (
-          Array(3).fill(0).map((_, i) => (
-            <Card key={i} className="animate-pulse">
-              <CardHeader className="pb-2">
-                <div className="h-7 bg-muted rounded-md w-3/4 mb-2"></div>
-                <div className="h-5 bg-muted rounded-md w-1/2"></div>
-              </CardHeader>
-              <CardContent>
-                <div className="h-4 bg-muted rounded-md w-full mb-3"></div>
-                <div className="h-4 bg-muted rounded-md w-2/3"></div>
-              </CardContent>
-            </Card>
-          ))
+          Array(3)
+            .fill(0)
+            .map((_, i) => (
+              <Card key={i} className="animate-pulse">
+                <CardHeader className="pb-2">
+                  <div className="h-7 bg-muted rounded-md w-3/4 mb-2"></div>
+                  <div className="h-5 bg-muted rounded-md w-1/2"></div>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-4 bg-muted rounded-md w-full mb-3"></div>
+                  <div className="h-4 bg-muted rounded-md w-2/3"></div>
+                </CardContent>
+              </Card>
+            ))
         ) : filteredProjects.length === 0 ? (
           <div className="col-span-full text-center py-10">
             <div className="mx-auto h-12 w-12 text-muted-foreground mb-3">
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-folder">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="48"
+                height="48"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-folder"
+              >
                 <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z" />
               </svg>
             </div>
             <h3 className="text-lg font-medium mb-1">No projects found</h3>
             <p className="text-muted-foreground mb-4">
-              {searchQuery ? "Try adjusting your search query" : "Get started by creating your first project"}
+              {searchQuery
+                ? "Try adjusting your search query"
+                : "Get started by creating your first project"}
             </p>
             {!searchQuery && (
               <Button
@@ -166,21 +198,28 @@ export default function Projects() {
           </div>
         ) : (
           filteredProjects.map((project: any) => (
-            <Card key={project.id} className="hover:shadow-md transition-shadow">
+            <Card
+              key={project.id}
+              className="hover:shadow-md transition-shadow"
+            >
               <CardHeader className="pb-2">
                 <div className="flex justify-between items-start">
                   <div className="flex items-center gap-2">
-                    <div 
-                      className="w-3 h-3 rounded-full" 
+                    <div
+                      className="w-3 h-3 rounded-full"
                       style={{ backgroundColor: project.color }}
                     ></div>
                     <CardTitle className="text-lg">{project.name}</CardTitle>
                   </div>
                   {!project.isActive && (
-                    <Badge variant="outline" className="text-xs">Inactive</Badge>
+                    <Badge variant="outline" className="text-xs">
+                      Inactive
+                    </Badge>
                   )}
                 </div>
-                <p className="text-sm text-muted-foreground">{project.client}</p>
+                <p className="text-sm text-muted-foreground">
+                  {project.client}
+                </p>
               </CardHeader>
               <CardContent>
                 <p className="text-sm mb-4 line-clamp-2">
@@ -193,7 +232,18 @@ export default function Projects() {
                     size="sm"
                     className="h-8 w-8 p-0"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-pencil">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="lucide lucide-pencil"
+                    >
                       <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
                       <path d="m15 5 4 4" />
                     </svg>
@@ -205,7 +255,18 @@ export default function Projects() {
                     size="sm"
                     className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-trash-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="lucide lucide-trash-2"
+                    >
                       <path d="M3 6h18" />
                       <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
                       <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
@@ -230,17 +291,21 @@ export default function Projects() {
       />
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the project and all associated time entries.
+              This action cannot be undone. This will permanently delete the
+              project and all associated time entries.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction 
+            <AlertDialogAction
               onClick={confirmDelete}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >

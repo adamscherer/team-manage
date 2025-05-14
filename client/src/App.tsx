@@ -1,16 +1,18 @@
-import { Switch, Route } from "wouter";
-import { queryClient } from "./lib/queryClient";
+import MainLayout from "@/layouts/main-layout";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "next-themes";
+import { Route, Switch } from "wouter";
+
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/not-found";
 import Dashboard from "@/pages/dashboard";
-import TimeEntries from "@/pages/time-entries";
+import NotFound from "@/pages/not-found";
 import Projects from "@/pages/projects";
 import Reports from "@/pages/reports";
 import Teams from "@/pages/teams";
-import MainLayout from "@/layouts/main-layout";
-import { ThemeProvider } from "next-themes";
+import TimeEntries from "@/pages/time-entries";
+
+import { queryClient } from "./lib/queryClient";
 
 function Router() {
   return (

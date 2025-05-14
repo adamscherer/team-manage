@@ -17,8 +17,8 @@ export function ProjectProgress({
     <div>
       <div className="flex items-center justify-between mb-1">
         <div className="flex items-center">
-          <div 
-            className="w-2 h-2 rounded-full mr-2" 
+          <div
+            className="w-2 h-2 rounded-full mr-2"
             style={{ backgroundColor: color }}
           ></div>
           <span className="text-sm font-medium">{name}</span>
@@ -28,11 +28,11 @@ export function ProjectProgress({
         </span>
       </div>
       <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-        <div 
-          className="h-full rounded-full" 
-          style={{ 
+        <div
+          className="h-full rounded-full"
+          style={{
             width: `${percentage}%`,
-            backgroundColor: color
+            backgroundColor: color,
           }}
         ></div>
       </div>
