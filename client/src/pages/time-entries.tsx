@@ -31,18 +31,18 @@ export default function TimeEntries() {
   const [entryToDelete, setEntryToDelete] = useState<number | null>(null);
   
   // Filters
-  const [selectedProjectFilter, setSelectedProjectFilter] = useState<string>("");
+  const [selectedProjectFilter, setSelectedProjectFilter] = useState<string>("all");
   const [dateFilter, setDateFilter] = useState<Date | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState("");
   
   // Fetch time entries
-  const { data: timeEntries, isLoading: isLoadingEntries } = useQuery({
+  const { data: timeEntries = [], isLoading: isLoadingEntries } = useQuery<any[]>({
     queryKey: ["/api/time-entries"],
     refetchOnWindowFocus: false,
   });
   
   // Fetch projects for filter dropdown
-  const { data: projects } = useQuery({
+  const { data: projects = [] } = useQuery<any[]>({
     queryKey: ["/api/projects"],
     refetchOnWindowFocus: false,
   });
@@ -124,9 +124,9 @@ export default function TimeEntries() {
   };
   
   // Filter time entries
-  const filteredEntries = timeEntries ? timeEntries.filter((entry: any) => {
+  const filteredEntries = timeEntries.filter((entry: any) => {
     // Project filter
-    if (selectedProjectFilter && entry.projectId !== parseInt(selectedProjectFilter)) {
+    if (selectedProjectFilter && selectedProjectFilter !== "all" && entry.projectId !== parseInt(selectedProjectFilter)) {
       return false;
     }
     
@@ -154,7 +154,7 @@ export default function TimeEntries() {
     }
     
     return true;
-  }) : [];
+  });
   
   return (
     <div className="p-6">
@@ -197,7 +197,7 @@ export default function TimeEntries() {
               <SelectValue placeholder="All Projects" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All Projects</SelectItem>
+              <SelectItem value="all">All Projects</SelectItem>
               {projects?.map((project: any) => (
                 <SelectItem key={project.id} value={String(project.id)}>
                   {project.name}
